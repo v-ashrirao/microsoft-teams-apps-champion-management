@@ -33,6 +33,7 @@ export default class ClbHomeWebPart extends BaseClientSideWebPart<IClbHomeWebPar
     ReactDom.unmountComponentAtNode(this.domElement);
   }
 
+  //test
   // you can edit property pane based on requriments
   protected getPropertyPaneConfiguration(): IPropertyPaneConfiguration {
     return {
