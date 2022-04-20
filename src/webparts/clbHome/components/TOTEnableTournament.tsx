@@ -9,7 +9,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 
 //Fluent UI controls
-import { IButtonStyles, IChoiceGroupStyles, PrimaryButton } from "@fluentui/react";
+import { IButtonStyles, IChoiceGroupStyles, PrimaryButton, Spinner, SpinnerSize } from "@fluentui/react";
 import { Label } from "@fluentui/react/lib/Label";
 import { ChoiceGroup, IChoiceGroupOption } from "@fluentui/react";
 import { Dialog, DialogType, DialogFooter } from "@fluentui/react/lib/Dialog";
@@ -75,6 +75,7 @@ interface IEnableTournamentState {
   hideDialog: boolean;
   noTournamentsFlag: boolean;
   tournamentAction: string;
+  showSpinner: boolean;
 }
 
 const endButtonStyles: Partial<IButtonStyles> = {
@@ -147,6 +148,7 @@ export default class TOTEnableTournament extends React.Component<
       hideDialog: true,
       noTournamentsFlag: false,
       tournamentAction: "",
+      showSpinner: false,
 
     };
     commonServiceManager = new commonServices(
@@ -395,46 +397,66 @@ export default class TOTEnableTournament extends React.Component<
         showError: false,
         endTournamentError: false,
         hideDialog: true,
+        showSpinner: true,
       });
       console.log(stringsConstants.TotLog + "Completing active tournament.");
 
-      if (this.state.selectedActiveTournament == "")
-        this.setState({ endTournamentError: true });
+      if (this.state.selectedActiveTournament == "") {
+        this.setState({
+          endTournamentError: true,
+          showSpinner: false
+        });
+      }
       else {
+
         let submitTournamentObject: any = {
           Status: stringsConstants.TournamentStatusCompleted,
         };
+        //Creating items in Participants Report and Tournaments Report List for the completed tournament
+        await commonServiceManager
+          .updateCompletedTournamentDetails(
+            this.state.selectedActiveTournament, new Date()
+          ).then(() => {
+            //Updating status for the completed tournament in Tournaments List
+            commonServiceManager
+              .updateListItem(
+                stringsConstants.TournamentsMasterList,
+                submitTournamentObject,
+                this.state.selectedActiveTournamentId
+              ).then(() => {
+                //Refresh the active tournaments list after completing a tournament by deleting it from the array
+                let newActiveTournamentsRefresh: any[] = this.state.activeTournamentsList;
 
-        commonServiceManager
-          .updateListItem(
-            stringsConstants.TournamentsMasterList,
-            submitTournamentObject,
-            this.state.selectedActiveTournamentId
-          )
-          .then((result) => {
-            //Refresh the active tournaments list after completing a tournament by deleting it from the array
-            let newActiveTournamentsRefresh: any[] = this.state.activeTournamentsList;
+                var removeIndex = newActiveTournamentsRefresh.map((item) => {
+                  return item.text;
+                }).indexOf(this.state.selectedActiveTournament);
 
-            var removeIndex = newActiveTournamentsRefresh.map((item) => {
-              return item.text;
-            }).indexOf(this.state.selectedActiveTournament);
+                newActiveTournamentsRefresh.splice(removeIndex, 1);
+                this.setState({ activeTournamentsList: newActiveTournamentsRefresh });
 
-            newActiveTournamentsRefresh.splice(removeIndex, 1);
-            this.setState({ activeTournamentsList: newActiveTournamentsRefresh });
+                if (newActiveTournamentsRefresh.length == 0)
+                  this.setState({ activeTournamentFlag: false, showSpinner: false });
 
-            if (newActiveTournamentsRefresh.length == 0)
-              this.setState({ activeTournamentFlag: false });
-
-
-            //Show success message and clear state for selected item
-            this.setState({
-              selectedActiveTournament: "",
-              selectedActiveTournamentId: "",
-              showSuccess: true,
-              successMessage: LocaleStrings.EndTournamentSuccessMessage,
-            });
-          })
-          .catch((error) => {
+                //Show success message and clear state for selected item
+                this.setState({
+                  selectedActiveTournament: "",
+                  selectedActiveTournamentId: "",
+                  showSuccess: true,
+                  successMessage: LocaleStrings.EndTournamentSuccessMessage,
+                  showSpinner: false
+                });
+              }).catch((error) => {
+                console.error("TOT_TOTEnableTournament_completeTournament \n", error);
+                this.setState({
+                  showError: true,
+                  showSpinner: false,
+                  errorMessage:
+                    stringsConstants.TOTErrorMessage +
+                    "while completing the tournament. Below are the details: \n" +
+                    JSON.stringify(error),
+                });
+              });
+          }).catch((error) => {
             console.error("TOT_TOTEnableTournament_completeTournament \n", error);
             this.setState({
               showError: true,
@@ -553,6 +575,12 @@ export default class TOTEnableTournament extends React.Component<
                   {LocaleStrings.SelectEndTournamentMessage}
                 </Label>
               )}
+              {this.state.showSpinner &&
+                <Spinner
+                  label={LocaleStrings.CompleteTournamentSpinnerMessage}
+                  size={SpinnerSize.large}
+                />
+              }
             </Col>
           </Row>
           <Row>
@@ -566,7 +594,8 @@ export default class TOTEnableTournament extends React.Component<
                   title={LocaleStrings.EndTournamentButton}
                   styles={endButtonStyles}
                   onClick={this.endTournament}
-                  className={styles.completeBtn}
+                  className={this.state.showSpinner ? styles.disabledBtn : styles.completeBtn}
+                  disabled={this.state.showSpinner}
                 />
               )}
             </Col>

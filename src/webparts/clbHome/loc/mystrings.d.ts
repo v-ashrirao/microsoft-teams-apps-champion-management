@@ -4,7 +4,7 @@ declare interface IClbHomeWebPartStrings {
   DescriptionFieldLabel: string;
 
   //-------------------------------------CMP----------------------------------------------
-  
+
   //CMP Common
   CMPBreadcrumbLabel: string;
   SaveButton: string;
@@ -72,11 +72,11 @@ declare interface IClbHomeWebPartStrings {
   ChampionsListPageTitle: string;
   UserNominatedMessage: string;
   UserAddedMessage: string;
-  PeopleNameGridHeader:string;
-  RegionGridHeader:string;
-  CountryGridHeader:string;
-  GroupGridHeader:string;
-  FocusAreaGridHeader:string;  
+  PeopleNameGridHeader: string;
+  RegionGridHeader: string;
+  CountryGridHeader: string;
+  GroupGridHeader: string;
+  FocusAreaGridHeader: string;
   StatusGridHeader: string;
   ManageApprovalsPageTitle: string;
   ActionGridHeader: string;
@@ -122,10 +122,10 @@ declare interface IClbHomeWebPartStrings {
   //CMP Sidebar
   CMPSideBarPointsLabel: string;
   CMPSideBarGlobalRankLabel: string;
-  CMPSideBarChampionsLabel:string;
-  FirstNameLabel:string;
-  LastNameLabel:string;
-  EmailIDLabel: string;  
+  CMPSideBarChampionsLabel: string;
+  FirstNameLabel: string;
+  LastNameLabel: string;
+  EmailIDLabel: string;
   BecomeChampionLabel: string;
   ChampionSubmissionPendingLabel: string;
   ChampionRequestSubmitSuccessMessage: string;
@@ -135,26 +135,26 @@ declare interface IClbHomeWebPartStrings {
   PivotHeaderNearMe: string;
   PivotHeaderBySpeciality: string;
   NearMePlaceHolder: string;
-  BySpecialityPlaceHolder:string;
+  BySpecialityPlaceHolder: string;
 
   //Champions
   TopChampionsLabel: string;
   RecordsNotFound: string;
   EventTypeLabel: string;
-  CountLabel:string;
+  CountLabel: string;
   MyRankLabel: string;
 
   //ChampionView
   ViewDashBoardLabel: string;
   DateofEventGridLabel: string;
-  EventTypeGridLabel: string;  
+  EventTypeGridLabel: string;
   RecordEventLabel: string;
   MonthAndDateLabel: string;
   EventTypeGridLabelPlaceHolder: string;
   EventTypeValidationMessage: string;
   CountValidationMessage: string;
   EventsSubmitMessage: string;
-  SubmitButton:string;
+  SubmitButton: string;
 
   //Employee View
   SearchLabel: string;
@@ -175,7 +175,7 @@ declare interface IClbHomeWebPartStrings {
   ActionErrorLabel: string;
   CreateTournamentButton: string;
   DuplicateTournamentNameError: string;
-  
+
   //TOT Common
   TOTBreadcrumbLabel: string;
 
@@ -191,6 +191,7 @@ declare interface IClbHomeWebPartStrings {
   ManageAdminsLabel: string;
   ManageDigitalBadgesLabel: string;
   QuickLinksLabel: string;
+  SpinnerListCreationMessage: string;
 
   //Enable Tournament
   ManageTournamentsPageTitle: string;
@@ -204,7 +205,6 @@ declare interface IClbHomeWebPartStrings {
   ActiveTournamentLabel: string;
   EndTournamentButton: string;
   StartTournamentHeaderLabel: string;
-  StartTournamentInfoToolTip: string;
   NoTournamentMessage: string;
   SelectTournamentMessage: string;
   NoActiveTournamentMessage: string;
@@ -212,6 +212,7 @@ declare interface IClbHomeWebPartStrings {
   StartTournamentButton: string;
   EndTournamentSuccessMessage: string;
   EnableTournamentSuccessMessage: string;
+  CompleteTournamentSpinnerMessage: string;
 
   // TOT LeaderBoard & TOT My Dashboard
   NoActiveParticipantsMessage; string;
@@ -225,7 +226,7 @@ declare interface IClbHomeWebPartStrings {
   FormSavingMessage: string;
   CompletedActionsLabel: string;
   RankLabel: string;
-  UserLabel: string;  
+  UserLabel: string;
   MyDashboardInfoIconMessage: string;
   SelectTournamentPlaceHolder: string;
   MyTournamentsLabel: string;
@@ -236,6 +237,27 @@ declare interface IClbHomeWebPartStrings {
   PointsLabel: string;
   TournamentRankLabel: string;
   ParticipantsLabel: string;
+
+
+  //TOT Report
+  TournamentReportsPageTitle: string;
+  TotalActivitiesLabel: string;
+  TotalPointsLabel: string;
+  TotalParticipantsLabel: string;
+  TotalPercentageCompletionLabel: string;
+  Top5ParticipantswithPointsLabel: string;
+  Top5TournamentswithParticipantsLabel: string;
+  ParticipantsStatusLabel: string;
+  ParticipantsDetailsLabel: string;
+  NameLabel: string;
+  PercentageTournamentCompletedLabel: string;
+  ActivitiesCompletedLabel: string;
+  NoRecordsinGridLabel: string,
+  SearchPlaceholder: string,
+  NoCompletedTournamentsMessage: string,
+  ReportsDropdownInfoIconText: string,
+  RefreshIconInfoText: string
+
 
   //-----------------------------------------------------------------------------------------
 }
