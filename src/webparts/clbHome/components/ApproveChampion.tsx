@@ -33,6 +33,7 @@ export interface IClbChampionsListProps {
   onClickAddmember: Function;
   isEmp: boolean;
   siteUrl: string;
+  list:ISPLists;
 }
 export interface ISPLists {
   value: ISPList[];
@@ -77,28 +78,12 @@ class ApproveChampion extends React.Component<IClbChampionsListProps, IState> {
       siteUrl: this.props.siteUrl,
       memberrole: "",
     };
-    this._getListData();
   }
 
-  //Get the list of Members from member List
-  private _getListData(): Promise<ISPLists> {
-    return this.props.context.spHttpClient
-      .get(
-        "/" + siteconfig.inclusionPath + "/" + siteconfig.sitename + "/_api/web/lists/GetByTitle('Member List')/Items?$top=1000",
-        SPHttpClient.configurations.v1
-      )
-      .then((response: SPHttpClientResponse) => {
-        if (response.status === 200) {
-          response.json().then((responseJSON: any) => {
-            this._renderList(responseJSON.value);
-          });
-          return response.json();
-        }
-      });
-  }
-
-  private _renderList(items: ISPList[]): void {
-    this.setState({ list: { value: items } });
+  public componentDidMount(): void {
+    this.setState({
+      list : this.props.list
+    });
   }
 
   private updateItem = (e, ID: number) => {
@@ -135,24 +120,28 @@ class ApproveChampion extends React.Component<IClbChampionsListProps, IState> {
         spHttpClientOptions
       )
       .then((response: SPHttpClientResponse) => {
+        //filter updated item from state
+        let filteredItems = this.state.list.value.filter((i:ISPList) => i.ID !== ID);
         if (response.status === 201) {
           this.setState({
             UserDetails: [],
             isAddChampion: false,
+            list: {value : filteredItems}
           });
           alert("Champion" + status);
         } else {
           if (status === 'Approved') {
             this.setState({
-              approveMessage: LocaleStrings.ChampionApprovedMessage
+              approveMessage: LocaleStrings.ChampionApprovedMessage,
+              list: {value : filteredItems}
             });
           }
           if (status === 'Rejected') {
             this.setState({
-              rejectMessage: LocaleStrings.ChampionRejectedMessage
+              rejectMessage: LocaleStrings.ChampionRejectedMessage,
+              list: {value : filteredItems}
             });
           }
-          this._getListData();
         }
       });
   }
@@ -166,7 +155,7 @@ class ApproveChampion extends React.Component<IClbChampionsListProps, IState> {
           />
           <span
             className={styles.backLabel}
-            onClick={() => { this.props.onClickAddmember(); }}
+            onClick={() => { this.props.onClickAddmember(this.state.list); }}
             title={LocaleStrings.CMPBreadcrumbLabel}
           >
             {LocaleStrings.CMPBreadcrumbLabel}

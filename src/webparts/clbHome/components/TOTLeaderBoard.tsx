@@ -424,7 +424,6 @@ export default class TOTLeaderBoard extends React.Component<
                         table-responsive
                         bordered
                         hover
-                        responsive
                         keyField="Rank"
                         data={this.state.allUserActions}
                         columns={columns}
